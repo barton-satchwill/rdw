@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+#===========================================================================#
+#                                                                           #
+#                    Caution: This file is managed by Chef                  #
+#                                                                           #
+#===========================================================================#
+
+import os
+import sys
+
+cmd = "/usr/local/bin/omnipitr-archive " + " ".join([
+	"-l /var/log/postgresql/omnipitr.log",
+	"-s <%= node[:omnipitr][:tmp] %>/state",
+	"-dr gzip=<%= node[:postgresql][:wal_path] %>",
+	"-db <%= node[:omnipitr][:tmp] %>/dstbackup",
+	"-t <%= node[:omnipitr][:tmp] %>/",
+	"-v %(p)s" % { 'p': sys.argv[1] }])
+
+os.system(cmd)
+
+
