@@ -6,8 +6,9 @@
   ],
   "postgresql": {
     "password": {
-      "postgres": "flummox"
+      "postgres": "change-db-admin-password"
     }
   }
 }
+
 
