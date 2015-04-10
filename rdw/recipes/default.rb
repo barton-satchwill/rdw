@@ -20,6 +20,7 @@
 # -----------------------------------------------------------------------
 # - all of this needs a major re-factoring, and a clean-up of attributes
 # - replace 'create-db' task with a utility script
+# 	- build a better db script
 # - add log directory
 # -----------------------------------------------------------------------
 
@@ -44,14 +45,14 @@ end
 	
 
 cron "backup-fs" do
-	hour node[:backup][:db_cron_hour]
-	minute node[:backup][:db_cron_minute]
+	hour node[:remote][:backup][:fs][:time].split(":").first.to_i
+	minute node[:remote][:backup][:fs][:time].split(":").last.to_i
 	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a /science-path/ #{node[:backup][:ipaddress]}:#{node[:backup][:fs]}/"
 end
 
 cron "backup-db" do
-	hour node[:backup][:db_cron_hour]
-	minute node[:backup][:db_cron_minute]
+	hour node[:remote][:backup][:db][:time].split(":").first.to_i
+	minute node[:remote][:backup][:db][:time].split(":").last.to_i
 	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:postgresql][:backup_path]}/ #{node[:backup][:ipaddress]}:#{node[:backup][:db]}/"
 end
 
