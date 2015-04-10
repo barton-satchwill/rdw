@@ -11,3 +11,7 @@ default["omnipitr"]["tmp"] = "/postgresql/tmp"
 default["postgresql"]["backup_time"] = "00:30"
 default["postgresql"]["backup_path"] = "/postgresql/backups"
 default["postgresql"]["wal_path"] = "/postgresql/WAL"
+
+default["backup"]["ipaddress"] = "199.116.235.151"
+default["backup"]["db"] = "/backups/db/"
+default["backup"]["fs"] = "/backups/fs/"
