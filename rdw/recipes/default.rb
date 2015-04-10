@@ -18,7 +18,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 # -----------------------------------------------------------------------
-# - deploy ssh key to backup server
 # - all of this needs a major re-factoring, and a clean-up of attributes
 # - replace 'create-db' task with a utility script
 # - add log directory

@@ -104,8 +104,8 @@ cron "clock sync" do
 end
 
 cron "daily postgresql database backup" do
-	hour node[:postgresql][:backup_time].split(":").first.to_i
-	minute node[:postgresql][:backup_time].split(":").last.to_i
+	hour node[:local][:backup][:db][:time].split(":").first.to_i
+	minute node[:local][:backup][:db][:time].split(":").last.to_i
 	command "/usr/local/bin/postgresql_hot_backup"
 end
 
