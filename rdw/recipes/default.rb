@@ -18,11 +18,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 # -----------------------------------------------------------------------
+# - deploy ssh key to backup server
+# - all of this needs a major re-factoring, and a clean-up of attributes
+# - replace 'create-db' task with a utility script
+# - add log directory
+# -----------------------------------------------------------------------
 
 template "/etc/motd" do
 	source "motd.erb"
 end
-
 
 template "/tmp/createdb.sql" do
 	source "createdb.sql"
@@ -31,5 +35,24 @@ end
 execute "create-db" do
 	user "postgres"
 	command "psql -f /tmp/createdb.sql -v db='#{node[:postgresql][:db]}' -v passwd='#{node[:postgresql][:passwd]}' -v user='#{node[:postgresql][:role]}'"
+end
+
+directory "/science-path" do
+	action :create
+	recursive true
+	mode 755
+end
+	
+
+cron "backup-fs" do
+	hour node[:backup][:db_cron_hour]
+	minute node[:backup][:db_cron_minute]
+	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a /science-path/ #{node[:backup][:ipaddress]}:#{node[:backup][:fs]}/"
+end
+
+cron "backup-db" do
+	hour node[:backup][:db_cron_hour]
+	minute node[:backup][:db_cron_minute]
+	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:postgresql][:backup_path]}/ #{node[:backup][:ipaddress]}:#{node[:backup][:db]}/"
 end
 
