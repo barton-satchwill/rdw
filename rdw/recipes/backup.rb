@@ -23,12 +23,12 @@ template "/etc/motd" do
 	source "motd.erb"
 end
 
-directory node[:backup][:fs] do
+directory node[:remote][:backup][:fs][:path] do
 	action :create
 	recursive true
 end
 
-directory node[:backup][:db] do
+directory node[:remote][:backup][:db][:path] do
 	action :create
 	recursive true
 end
