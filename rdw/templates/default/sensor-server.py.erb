@@ -1,0 +1,40 @@
+# Web service to serve fake sensor readings
+
+#! /usr/bin/python
+
+import sys, os, shutil, time
+import subprocess, shlex
+from flask import Flask,jsonify,abort,request
+# from threading import Thread
+
+app = Flask(__name__)
+
+@app.route('/read_sensor', methods=['POST','GET'])
+def read_sensor():
+	list = [
+		{'param': 'foo', 'val': 2},
+		{'param': 'bar', 'val': 10}
+	]
+	# jsonify will do for us all the work, returning the
+	# previous data structure in JSON
+	return jsonify(results=list)
+
+
+
+def config():
+	config_file = '/usr/local/bin/blenderfarm/server.config'
+	cmd = ['bash', '-c', 'cat %s' % config_file]
+	proc = subprocess.Popen(cmd, stdout = subprocess.PIPE)
+	for line in proc.stdout:
+		line = line.replace('export ', '').replace('"', '').strip()
+		(key, _, value) = line.partition("=")
+		os.environ[key] = value
+	proc.communicate()
+
+
+
+if __name__ == '__main__':
+	#config()
+	app.run(host='0.0.0.0', debug=True)
+
+
