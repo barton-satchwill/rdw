@@ -1,40 +1,44 @@
-# Web service to serve fake sensor readings
-
 #! /usr/bin/python
 
-import sys, os, shutil, time
+#----------------------------------------------------------------
+# web service for fake sensor readings
+#----------------------------------------------------------------
+
+import sys, os, shutil, time, random
 import subprocess, shlex
 from flask import Flask,jsonify,abort,request
-# from threading import Thread
 
 app = Flask(__name__)
 
 @app.route('/read_sensor', methods=['POST','GET'])
 def read_sensor():
-	list = [
-		{'param': 'foo', 'val': 2},
-		{'param': 'bar', 'val': 10}
-	]
-	# jsonify will do for us all the work, returning the
-	# previous data structure in JSON
-	return jsonify(results=list)
+	list = get_fake_sensor_readings()
+	return jsonify(sensor_readings=list)
 
 
+def get_fake_sensor_readings():
+	min = 1.5
+	max = 1.9
+	elements = 6
+	list = []
 
-def config():
-	config_file = '/usr/local/bin/blenderfarm/server.config'
-	cmd = ['bash', '-c', 'cat %s' % config_file]
-	proc = subprocess.Popen(cmd, stdout = subprocess.PIPE)
-	for line in proc.stdout:
-		line = line.replace('export ', '').replace('"', '').strip()
-		(key, _, value) = line.partition("=")
-		os.environ[key] = value
-	proc.communicate()
+	headers = {
+		'flux': 4,
+		'sagans': 2,
+		'fizz': 4,
+		'sparkle':2,
+		'clarity':1,
+		'sputz':5
+	}
+
+	for header in headers:
+		decimals = headers[header]
+		reading = round(random.uniform(min, max), random.randint(0,decimals))
+		reading = ("{:2.%df}" % (decimals)).format(reading)
+		list.append("{'%s':%s}" % (header, reading))
+	return list
 
 
 
 if __name__ == '__main__':
-	#config()
 	app.run(host='0.0.0.0', debug=True)
-
-
