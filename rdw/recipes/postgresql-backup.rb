@@ -21,14 +21,14 @@
 
 
 template "/usr/local/bin/postgresql_hot_backup" do
-	source "postgresql_hot_backup.py.erb"
+	source "db/backup/postgresql_hot_backup.py.erb"
 	owner "postgres"
 	group "postgres"
 	mode 0700
 end
 
 template "/usr/local/bin/postgresql_archive" do
-	source "postgresql_archive.py.erb"
+	source "db/backup/postgresql_archive.py.erb"
 	owner "postgres"
 	group "postgres"
 	mode 0755

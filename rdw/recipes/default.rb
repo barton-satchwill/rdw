@@ -29,7 +29,7 @@ template "/etc/motd" do
 end
 
 template "/tmp/createdb.sql" do
-	source "createdb.sql"
+	source "db/createdb.sql"
 end
 
 execute "create-db" do

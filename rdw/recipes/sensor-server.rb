@@ -31,12 +31,12 @@ template "/usr/local/bin/sensor-server/sensor-server.py" do
 end
 
 template "/etc/init.d/sensorserver" do
-	source "etc.initd.sensorserver.erb"
+	source "sensorserver/etc.initd.sensorserver.erb"
 	mode 0755
 end
 
 template "/usr/local/bin/sensorserver" do
-	source "usr.local.bin.sensorserver.erb"
+	source "/sensorserver/usr.local.bin.sensorserver.erb"
 	mode 0755
 end
 
