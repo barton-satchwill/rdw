@@ -25,8 +25,16 @@ end
 
 execute "pip install flask"
 
+directory "/usr/local/bin/sensor-server" do
+	owner "ubuntu"
+	group "ubuntu"
+	mode "0755"
+	action :create
+end
+
+
 template "/usr/local/bin/sensor-server/sensor-server.py" do
-	source "sensor-server.py.erb"
+	source "sensorserver/sensor-server.py.erb"
 	mode 0755
 end
 
