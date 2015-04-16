@@ -16,6 +16,13 @@
 # IMAGE="<machine image name or id>"
 # GIT_REPOSITORY="https://github.com/my/repo.git"
 #------------------------------------------------------------------------------
+source "/Users/barton/barton.satchwill/credentials/rac/barton/edmonton/openrc.sh"
+export KNIFE_HOME="/Users/barton/.chef/calgary-sandbox"
+ID="/Users/barton/barton.satchwill/credentials/rac/barton/racbart.pem"
+KEY="racbart"
+IMAGE="Ubuntu 14.04"
+GIT_REPOSITORY="https://github.com/barton-satchwill/rdw.git"
+#------------------------------------------------------------------------------
 
 SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 HOSTNAME=$1
@@ -42,6 +49,7 @@ done
 
 echo "bootstrapping Chef"
 knife bootstrap -i $ID -x ubuntu --sudo $IP
+ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get update"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get install -y git tree"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "git clone $GIT_REPOSITORY"
 
