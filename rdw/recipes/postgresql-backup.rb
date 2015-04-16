@@ -58,12 +58,11 @@ end
 
 # Create necessary directories for omnipitr backups
 [
-	node[:postgresql][:backup_path],
-	node[:postgresql][:wal_path],
+	node[:local][:backup][:db][:path],
+	node[:local][:backup][:wal][:path],
 	node[:omnipitr][:tmp],
 	"#{node[:omnipitr][:tmp]}/state"
 ].each do | dir |
-
 	directory dir do
 		owner "postgres"
 		group "postgres"

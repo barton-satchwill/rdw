@@ -54,13 +54,13 @@ end
 cron "backup-fs" do
 	hour node[:remote][:backup][:fs][:time].split(":").first.to_i
 	minute node[:remote][:backup][:fs][:time].split(":").last.to_i
-	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a /science-path/ #{node[:backup][:ipaddress]}:#{node[:backup][:fs]}/"
+	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a /science-path/ #{node[:remote][:backup][:ipaddress]}:#{node[:remote][:backup][:fs][:path]}/"
 end
 
 cron "backup-db" do
 	hour node[:remote][:backup][:db][:time].split(":").first.to_i
 	minute node[:remote][:backup][:db][:time].split(":").last.to_i
-	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:postgresql][:backup_path]}/ #{node[:backup][:ipaddress]}:#{node[:backup][:db]}/"
+	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:local][:backup][:db][:path]}/ #{node[:remote][:backup][:ipaddress]}:#{node[:remote][:backup][:db][:path]}/"
 end
 
 template "/usr/local/bin/create-db-archive" do
@@ -80,7 +80,7 @@ end
 cron "archive-db" do
 	hour 23
 	minute 17
-	user ubuntu
+	user "ubuntu"
 	command "/usr/local/bin/create-db-archive"
 end
 
