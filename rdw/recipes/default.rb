@@ -42,7 +42,14 @@ directory "/science-path" do
 	recursive true
 	mode 755
 end
-	
+
+# configuration files
+directory "/etc/rdw" do
+	action :create
+	recursive true
+	mode 755
+end
+
 
 cron "backup-fs" do
 	hour node[:remote][:backup][:fs][:time].split(":").first.to_i
@@ -54,5 +61,26 @@ cron "backup-db" do
 	hour node[:remote][:backup][:db][:time].split(":").first.to_i
 	minute node[:remote][:backup][:db][:time].split(":").last.to_i
 	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:postgresql][:backup_path]}/ #{node[:backup][:ipaddress]}:#{node[:backup][:db]}/"
+end
+
+template "/usr/local/bin/create-db-archive" do
+	source "db/archive/create-db-archive.erb"
+	owner "ubuntu"
+	group "ubuntu"
+	mode "0755"
+end
+
+template "/etc/rdw/db-archive-header" do
+	source "db/archive/db-archive-header.erb"
+	owner "ubuntu"
+	group "ubuntu"
+	mode "0644"
+end
+
+cron "archive-db" do
+	hour 23
+	minute 17
+	user ubuntu
+	command "/usr/local/bin/create-db-archive"
 end
 

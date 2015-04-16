@@ -1,0 +1,6 @@
+#! /bin/bash
+
+ARCHIVE="/science-path/db-archive.csv"
+
+cat /etc/db-archive-header > $ARCHIVE
+$(psql -d rdw -c 'copy (select * from sensor_reading) to stdout with CSV HEADER;' >> $ARCHIVE)
