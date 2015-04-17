@@ -24,6 +24,12 @@
 # - add log directory
 # -----------------------------------------------------------------------
 
+package "libpq-dev"
+package "python-dev"
+package "python-pip" 
+execute "pip install flask"
+
+
 template "/etc/motd" do
 	source "motd.erb"
 end
