@@ -46,14 +46,14 @@ end
 directory "/science-path" do
 	action :create
 	recursive true
-	mode 755
+	mode 0755
 end
 
 # configuration files
 directory "/etc/rdw" do
 	action :create
 	recursive true
-	mode 755
+	mode 0755
 end
 
 

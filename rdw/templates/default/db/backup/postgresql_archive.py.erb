@@ -12,7 +12,7 @@ import sys
 cmd = "/usr/local/bin/omnipitr-archive " + " ".join([
 	"-l /var/log/postgresql/omnipitr.log",
 	"-s <%= node[:omnipitr][:tmp] %>/state",
-	"-dr gzip=<%= node[:postgresql][:wal_path] %>",
+	"-dr gzip=<%= node[:local][:backup][:wal][:path] %>",
 	"-db <%= node[:omnipitr][:tmp] %>/dstbackup",
 	"-t <%= node[:omnipitr][:tmp] %>/",
 	"-v %(p)s" % { 'p': sys.argv[1] }])

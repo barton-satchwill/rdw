@@ -24,13 +24,14 @@ template "/etc/motd" do
 end
 
 directory node[:remote][:backup][:fs][:path] do
+	owner "ubuntu"
 	action :create
 	recursive true
 end
 
 directory node[:remote][:backup][:db][:path] do
+	owner "ubuntu"
 	action :create
 	recursive true
 end
-
 

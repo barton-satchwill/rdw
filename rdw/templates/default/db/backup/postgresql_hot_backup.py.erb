@@ -13,7 +13,7 @@ cmd = "sudo -u postgres /usr/local/bin/omnipitr-backup-master " + " ".join([
 	"-D /var/lib/postgresql/<%= node[:postgresql][:version] %>/main",
 	"-l /var/log/postgresql/omnipitr.log",
 	"-x <%= node[:omnipitr][:tmp] %>/dstbackup",
-	"-dr gzip=<%= node[:postgresql][:backup_path] %>",
+	"-dr gzip=<%= node[:local][:backup][:db][:path] %>",
 	"-t <%= node[:omnipitr][:tmp] %>/",
 	"--pid-file /tmp/omnipitr_backup_master.pid -v"])
 

@@ -1,10 +1,9 @@
-
+#! /usr/bin/python
 #===========================================================================#
 #                                                                           #
 #                    Caution: This file is managed by Chef                  #
 #                                                                           #
 #===========================================================================#
-
 
 import psycopg2
 import sys
@@ -12,11 +11,6 @@ import json
 import urllib
 import urllib2
 import ast
-
-# sudo pip install psycopg2
-# sudo apt-get install libpq-dev python-dev
-# sudo pip install psycopg2
-
 
 url = 'http://199.116.235.151:5000/read_sensor'
 response = ast.literal_eval(urllib2.urlopen(url).read())

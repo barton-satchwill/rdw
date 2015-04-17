@@ -50,7 +50,7 @@ done
 echo "bootstrapping Chef"
 knife bootstrap -i $ID -x ubuntu --sudo $IP
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get update"
-ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get install -y git tree"
+ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get install -y git tree stow"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "git clone $GIT_REPOSITORY"
 
 # push your public ssh key into the authorized_keys of the root user.
