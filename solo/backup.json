@@ -2,7 +2,5 @@
   "run_list": [
     "recipe[rdw::backup]",
     "recipe[rdw::sensor-server]"
-  ], "python":{"install_method":"package"}
+  ]
 }
-
-
