@@ -6,26 +6,23 @@
 #===========================================================================#
 
 import psycopg2
-import sys
+import sys, ast
 import json
-import urllib
-import urllib2
-import ast
+import urllib, urllib2
 
-url = 'http://199.116.235.151:5000/read_sensor'
+
+url = 'http://<%= node[:remote][:backup][:ipaddress] %>:5000/read_sensor'
 response = ast.literal_eval(urllib2.urlopen(url).read())
 sql = 'insert into sensor_reading ('
 attributes = ""
 values = ""
+
 for k,v in response.items():
 	for attrib, reading in v.items():
 		attributes = attributes + attrib + ", "
 		values = values + str(reading) + ", "
 
 sql = sql + attributes[:-2] + ") values (" + values[:-2] + ");"
-insert = "psql -d rdw -c '" + sql + "'"
-print insert
-
 
 conn = None
 
