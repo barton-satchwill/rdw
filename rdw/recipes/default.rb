@@ -69,6 +69,13 @@ cron "backup-db" do
 	command "/usr/bin/rsync -e 'ssh -o StrictHostKeyChecking=no' -a #{node[:local][:backup][:db][:path]}/ #{node[:remote][:backup][:ipaddress]}:#{node[:remote][:backup][:db][:path]}/"
 end
 
+
+# ---------- this should probably be in it's own recipe ----------
+# TODO: set the swift environment variables
+
+package "python-swiftclient"
+
+# create a .csv extract of the database
 template "/usr/local/bin/create-db-archive" do
 	source "db/archive/create-db-archive.erb"
 	owner "ubuntu"
@@ -83,10 +90,26 @@ template "/etc/rdw/db-archive-header" do
 	mode "0644"
 end
 
-cron "archive-db" do
+cron "create-archive-db" do
 	hour 23
 	minute 17
 	user "ubuntu"
 	command "/usr/local/bin/create-db-archive"
+end
+
+
+# upload the .csv extract to the archive storage
+template "/usr/local/bin/archive-db" do
+	source "db/archive/archive.py.erb"
+	owner "ubuntu"
+	group "ubuntu"
+	mode "0755"
+end
+
+cron "archive-db" do
+	hour 23
+	minute 23
+	user "ubuntu"
+	command "/usr/local/bin/archive-db"
 end
 

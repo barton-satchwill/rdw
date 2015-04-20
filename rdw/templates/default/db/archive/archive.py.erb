@@ -1,0 +1,32 @@
+#!/usr/bin/python
+
+#===========================================================================#
+#                                                                           #
+#                    Caution: This file is managed by Chef                  #
+#                                                                           #
+#===========================================================================#
+
+import swiftclient
+import sys, os
+
+root_dir = '/home/ubuntu'
+bucket = 'rdw'
+logfile = os.path.join(root_dir, 'render.log')
+output_root = os.path.join(root_dir, 'images')
+output_dir = output_root
+
+pseudo_dir = os.path.join(output_root, pseudo_dir)
+print "uploading '%s' to Swift..." % pseudo_dir
+swift = swiftclient.Connection(
+	authurl = '<%= node[:OS_AUTH_URL] %>',
+	key = '<%= node[:OS_PASSWORD] %>',
+	user = '<%= node[:OS_USERNAME] %>',
+	tenant_name = '<%= node[:OS_TENANT_NAME] %>',
+	auth_version = 2)
+
+swift.put_container(bucket)
+f = open("/science-path/db-archive.csv", 'r')
+swift.put_object(bucket, "/science-path/db-archive.csv", f)
+
+print "uploaded '%s' to Swift..." % "db-archive.csv"
+
