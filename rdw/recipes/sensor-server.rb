@@ -32,7 +32,6 @@ directory "/usr/local/bin/sensor-server" do
 	action :create
 end
 
-
 template "/usr/local/bin/sensor-server/sensor-server.py" do
 	source "sensorserver/sensor-server.py.erb"
 	mode 0755
@@ -43,9 +42,8 @@ template "/etc/init.d/sensorserver" do
 	mode 0755
 end
 
-template "/usr/local/bin/sensorserver" do
-	source "/sensorserver/usr.local.bin.sensorserver.erb"
-	mode 0755
+service "sensorserver" do
+	action :start
 end
 
 
