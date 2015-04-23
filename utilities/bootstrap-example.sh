@@ -5,8 +5,7 @@
 # calling with 'push' as the 3rd parameter will push your ssh public key into
 # the authorised_keys list of the root user.
 #------------------------------------------------------------------------------
-
-
+#
 # These variables should be changed for your configuration
 #------------------------------------------------------------------------------
 # source "/my/cloud/credentials"
