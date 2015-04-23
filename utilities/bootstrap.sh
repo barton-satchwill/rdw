@@ -23,7 +23,7 @@ IP=$2
 TEST=""
 
 if [[ -z "$HOSTNAME" || -z $IP ]]; then
-	echo "$0 <hostname> <ip address> [push] "
+	echo "$0 <hostname> <ip address> [push-public|push-private] "
 	exit
 fi
 
@@ -48,10 +48,15 @@ ssh $SSH_PARAMS -i $ID ubuntu@$IP "git clone $GIT_REPOSITORY"
 
 # push your public ssh key into the authorized_keys of the root user.
 # this allows the root user to rsync and scp files between servers
-if [[ "$3" == "push" ]]; then
+if [[ "$3" == "push-public" ]]; then
 	echo pushing public key...
-	ssh $SSH_PARAMS -i $ID ubuntu@$IP "echo $(ssh-keygen -y -f $ID ) | sudo tee -a /root/.ssh/authorized_keys"
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "echo $(ssh-keygen -y -f $ID ) | sudo tee /root/.ssh/authorized_keys"
 fi
 
-#sudo chef-solo -c rdw/backup-solo.rb
-
+if [[ "$3" == "push-private" ]]; then
+	echo pushing private key...
+	scp $SSH_PARAMS -i $ID $ID ubuntu@$IP:/home/ubuntu/id_rsa
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo cp /home/ubuntu/id_rsa /root/.ssh/id_rsa"
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo chmod 600 /root/.ssh/id_rsa"
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo rm /home/ubuntu/id_rsa"
+fi
