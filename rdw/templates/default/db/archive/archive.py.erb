@@ -21,8 +21,8 @@ swift = swiftclient.Connection(
 	auth_version = 2)
 
 swift.put_container(bucket)
-f = open("science-path/db-archive.csv", 'r')
-swift.put_object(bucket, "/science-path/db-archive.csv", f)
+f = open("/science-path/db-archive.csv", 'r')
+swift.put_object(bucket, "science-path/db-archive.csv", f)
 
 print "uploaded '%s' to Swift..." % "db-archive.csv"
 
