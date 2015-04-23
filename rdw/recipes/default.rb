@@ -46,6 +46,8 @@ end
 directory "/science-path" do
 	action :create
 	recursive true
+	owner "ubuntu"
+	group "ubuntu"
 	mode 0755
 end
 
@@ -71,6 +73,8 @@ end
 
 
 # ----------- this might be better in it's own recipe -----------
+execute "pip install psycopg2"
+
 # take a sensor reading, and record it in the database
 template "/usr/local/bin/record-observation" do
 	source "record-observation.py.erb"
@@ -82,6 +86,7 @@ end
 cron "record-observation" do
 	hour "*"
 	minute "*/5"
+	user "ubuntu"
 	command "/usr/bin/python /usr/local/bin/record-observation"
 end
 
