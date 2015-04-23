@@ -16,11 +16,12 @@
 # IMAGE="<machine image name or id>"
 # GIT_REPOSITORY="https://github.com/my/repo.git"
 #------------------------------------------------------------------------------
-
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 SSH_PARAMS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 HOSTNAME=$1
 IP=$2
 TEST=""
+#------------------------------------------------------------------------------
 
 if [[ -z "$HOSTNAME" || -z $IP ]]; then
 	echo "$0 <hostname> <ip address> [push-public|push-private] "
@@ -45,6 +46,11 @@ knife bootstrap -i $ID -x ubuntu --sudo $IP
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get update"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get install -y git tree stow"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "git clone $GIT_REPOSITORY"
+
+# some of the attributes contain passwords that should not be checked
+# into the repository.  This will deploy your local version of the attributes
+# file to the new server.
+scp $SSH_PARAMS -i $ID $DIR/../rdw/attributes/default.rb ubuntu@$IP:~/rdw/rdw/attributes/default.rb
 
 # push your public ssh key into the authorized_keys of the root user.
 # this allows the root user to rsync and scp files between servers
