@@ -60,8 +60,8 @@ fi
 
 if [[ "$3" == "push-private" ]]; then
 	echo pushing private key...
-	scp $SSH_PARAMS -i $ID $ID ubuntu@$IP:/home/ubuntu/id_rsa
-	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo cp /home/ubuntu/id_rsa /root/.ssh/id_rsa"
-	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo chmod 600 /root/.ssh/id_rsa"
-	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo rm /home/ubuntu/id_rsa"
+	scp $SSH_PARAMS -i $ID $ID ubuntu@$IP:/home/ubuntu/rdw.pem
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo cp /home/ubuntu/rdw.pem /root/.ssh/rdw.pem"
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo chmod 600 /root/.ssh/rdw.pem"
+	ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo rm /home/ubuntu/rdw.pem"
 fi

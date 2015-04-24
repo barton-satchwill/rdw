@@ -38,6 +38,10 @@ template "/tmp/createdb.sql" do
 	source "db/createdb.sql"
 end
 
+template "/root/.ssh/config" do
+	source "ssh-config.erb"
+end
+
 execute "create-db" do
 	user "postgres"
 	command "psql -f /tmp/createdb.sql -v db='#{node[:postgresql][:db]}' -v passwd='#{node[:postgresql][:passwd]}' -v user='#{node[:postgresql][:role]}'"
