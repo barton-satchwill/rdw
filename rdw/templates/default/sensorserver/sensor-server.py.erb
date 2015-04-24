@@ -6,6 +6,7 @@
 
 import sys, os, shutil, time, random
 import subprocess, shlex
+import random, time
 from flask import Flask,jsonify,abort,request
 
 app = Flask(__name__)
@@ -22,13 +23,25 @@ def get_fake_sensor_readings():
 	elements = 6
 	data = {}
 
-	headers = { 'flux': 4, 'sagans': 2, 'fizz': 4, 'sparkle':2, 'clarity':1, 'sputz':5 }
+	# add readings for numeric attributes
+	headers = { 'flux': 4, 'sagans': 2, 'fizz': 4, 'sparkle':2, 'clarity':1, 'sputz':5, 'sputz_too':5 }
 
 	for header in headers:
 		decimals = headers[header]
 		reading = round(random.uniform(min, max), random.randint(0,decimals))
 		reading = ("{:2.%df}" % (decimals)).format(reading)
 		data[header] = reading
+
+	# add readings for the varchar sttributes
+	headers = { 'hab':30, 'zapple':30 }
+	values = ['HOT','COLD','RUN!','O.K.']
+
+	for header in headers:
+		reading = random.choice(values)
+		data[header] = "'" + reading + "'"
+
+	data['read_date'] = "'" + (time.strftime("%D %H:%M:%S")) + "'"
+
 	return data
 
 
