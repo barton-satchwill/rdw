@@ -120,8 +120,8 @@ end
 
 
 # upload the .csv extract to the archive storage
-template "/usr/local/bin/archive-db" do
-	source "db/archive/archive.py.erb"
+template "/usr/local/bin/store-db-archive" do
+	source "db/archive/store-db-archive.py.erb"
 	owner "ubuntu"
 	group "ubuntu"
 	mode "0755"
@@ -131,6 +131,6 @@ cron "archive-db" do
 	hour 23
 	minute 23
 	user "ubuntu"
-	command "/usr/local/bin/archive-db"
+	command "/usr/local/bin/store-db-archive"
 end
 
