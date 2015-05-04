@@ -24,7 +24,7 @@ template "/usr/local/bin/postgresql_hot_backup" do
 	source "db/backup/postgresql_hot_backup.py.erb"
 	owner "postgres"
 	group "postgres"
-	mode 0700
+	mode 0755
 end
 
 template "/usr/local/bin/postgresql_archive" do

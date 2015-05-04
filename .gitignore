@@ -1,2 +1,4 @@
 utilities/bootstrap.sh
 utilities/attributes.rb
+utilities/knife.rb
+utilities/validation.pem
