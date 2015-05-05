@@ -9,9 +9,8 @@
 # These variables should be changed for your configuration
 #------------------------------------------------------------------------------
 # source "/my/cloud/credentials"
-# export KNIFE_HOME="/path/to/my/knife.rb/directory"
 # ID="/path/to/my/openstack/ssh-key.pem"
-# KEY="<ssh keypair name?"
+# KEY="<ssh keypair name>"
 # IMAGE="<machine image name or id>"
 # GIT_REPOSITORY="https://github.com/my/repo.git"
 #------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ while [[ "$TEST" != "$HOSTNAME" ]]; do
 done
 
 echo "bootstrapping Chef"
-knife bootstrap -i $ID -x ubuntu --sudo $IP
+ssh $SSH_PARAMS -i $ID ubuntu@$IP "curl -L https://www.opscode.com/chef/install.sh | sudo bash"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get update"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "sudo apt-get install -y git tree stow"
 ssh $SSH_PARAMS -i $ID ubuntu@$IP "git clone $GIT_REPOSITORY"
